@@ -236,65 +236,13 @@ public class SeparateAdjectives {
                 for (String tag : tags) {
                     String tempT = tempTok[m];
                      if (tag.contains("JJ")) {
-                         System.out.println("Testedjifhdsuifhdisdhfisd");
-                         sentidor.pontuar(tag);
+                         sentidor.pontuar(tokens.get(i));
                      }
-                     
-                    if (tag.contains("NN")) {
-                        classificadoResultado.add(tag);
-                        classificadoNome.add(tokens.get(i));
-
-//                        HashMap
-////                        if (!contadorPalavra.containsKey(tokens.get(i))) {
-////                            System.out.println("ss");
-////                            contadorPalavra.put(tokens.get(i), 1);
-                       if (contadorPalavraGlobal.containsKey(tempT)) {
-                          Integer[] arrayActual =  contadorPalavraGlobal.get(tempT);
-                          arrayActual[i] = arrayActual[i]+1;
-                            contadorPalavraGlobal.put(tempT, arrayActual);
-                            System.out.println("REPETIDOS");
-                        }
-
-                    }
                     m++;
                 }
                 o++;
             }
         }
-        
-//                for (Entry<String, Integer> entry : contadorPalavra.entrySet()) {
-////    System.out.println(entry.getKey() + "/" + entry.getValue());
-//            bw2.write(entry.getKey() + "  -->  " + entry.getValue() + "\n");
-//
-//        }
-        
-        String[] listaLinhas = new String[11];
-        for (int i=0; i<listaLinhas.length;i++){
-            listaLinhas[i] = "";
-        }
-        
-                for (Entry<String, Integer[]> entry : contadorPalavraGlobal.entrySet()) {
-                    listaLinhas[0] += entry.getKey()+",";
-                    int contLinha = 1;
-                    for (Integer cc : entry.getValue()){
-                        Integer[] arrayActual =  entry.getValue();
-                        listaLinhas[contLinha]+= arrayActual[contLinha-1]+",";
-                        contLinha++;
-                    }
-                            
-//    System.out.println(entry.getKey() + "/" + entry.getValue());
-            
-        }
-               for (String s : listaLinhas){
-            bw2.write(s + "\n");
-        }         
-
-
-
-        bw.close();
-        bw2.close();
-        fw.close();
-        fw2.close();
     }
 
 }
