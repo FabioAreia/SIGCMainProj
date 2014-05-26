@@ -122,6 +122,23 @@ public class SentiWordNet {
 		System.out.println("good#a "+sentiwordnet.extract("good", "a"));
 		System.out.println("bad#a "+sentiwordnet.extract("bad", "a"));
 		System.out.println("nice#a "+sentiwordnet.extract("nice", "a"));
-		System.out.println("better#n "+sentiwordnet.extract("better", "a"));
+		System.out.println("worst#a "+sentiwordnet.extract("worst", "a"));
+	}
+        
+        	public  void pontuar(String palavra) throws IOException {
+//		if(args.length<1) {
+//			System.err.println("Usage: java SentiWordNetDemoCode <pathToSentiWordNetFile>");
+//			return;
+//		}
+		
+//		String pathToSWN = args[0];
+                String pathToSWN = "SentiWordNet_3.0.0_20130122.txt";
+		SentiWordNet sentiwordnet = new SentiWordNet(pathToSWN);
+                System.out.println("adjectivo#a "+sentiwordnet.extract(palavra, "a"));
+		
+		System.out.println("good#a "+sentiwordnet.extract("good", "a"));
+		System.out.println("bad#a "+sentiwordnet.extract("bad", "a"));
+		System.out.println("nice#a "+sentiwordnet.extract("nice", "a"));
+		System.out.println("worst#a "+sentiwordnet.extract("worst", "a"));
 	}
 }
