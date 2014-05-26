@@ -116,12 +116,12 @@ public class SentiWordNet {
 //		}
 		
 //		String pathToSWN = args[0];
-                String pathToSWN = "dados\\SentiWordNet_3.0.0_20130122.txt";
+                String pathToSWN = "SentiWordNet_3.0.0_20130122.txt";
 		SentiWordNet sentiwordnet = new SentiWordNet(pathToSWN);
 		
 		System.out.println("good#a "+sentiwordnet.extract("good", "a"));
 		System.out.println("bad#a "+sentiwordnet.extract("bad", "a"));
-		System.out.println("blue#a "+sentiwordnet.extract("blue", "a"));
-		System.out.println("blue#n "+sentiwordnet.extract("blue", "n"));
+		System.out.println("nice#a "+sentiwordnet.extract("nice", "a"));
+		System.out.println("better#n "+sentiwordnet.extract("better", "a"));
 	}
 }
