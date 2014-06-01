@@ -144,7 +144,7 @@ public class SeparateAdjectives {
         tokens = tokinization();
         System.out.println("tamanho dos tokens" + tokens.size());
         
-         SentiWordNet sentidor = new SentiWordNet("");
+         SentiWordNet sentidor = new SentiWordNet("SentiWordNet_3.0.0_20130122.txt");
 
 //        String input = tokinization().get(6);
         String input = "";
