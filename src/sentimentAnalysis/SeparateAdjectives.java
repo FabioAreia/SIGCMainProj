@@ -72,7 +72,7 @@ public class SeparateAdjectives {
         
 
         
-        InputStream is = new FileInputStream("C:\\Documents and Settings\\Administrator\\My Documents\\NetBeansProjects\\Open NLP\\en-sent.bin");
+        InputStream is = new FileInputStream("models\\en-sent.bin");
         SentenceModel model = new SentenceModel(is);
         SentenceDetectorME sdetector = new SentenceDetectorME(model);
 
@@ -102,7 +102,7 @@ public class SeparateAdjectives {
         BufferedReader readerText = new BufferedReader(new FileReader(file));
 
         // always start with a model, a model is learned from training data
-        InputStream is = new FileInputStream("C:\\Documents and Settings\\Administrator\\My Documents\\NetBeansProjects\\Open NLP\\en-token.bin");
+        InputStream is = new FileInputStream("models\\en-token.bin");
         TokenizerModel model = new TokenizerModel(is);
         Tokenizer tokenizer = new TokenizerME(model);
 

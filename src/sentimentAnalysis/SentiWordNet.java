@@ -119,7 +119,7 @@ public class SentiWordNet {
                 String pathToSWN = "SentiWordNet_3.0.0_20130122.txt";
 		SentiWordNet sentiwordnet = new SentiWordNet(pathToSWN);
 		
-		System.out.println("good#a "+sentiwordnet.extract("sports", "a"));
+		System.out.println("good#a "+sentiwordnet.extract("good", "a"));
 		System.out.println("bad#a "+sentiwordnet.extract("bad", "a"));
 		System.out.println("nice#a "+sentiwordnet.extract("nice", "a"));
 		System.out.println("worst#a "+sentiwordnet.extract("worst", "a"));
