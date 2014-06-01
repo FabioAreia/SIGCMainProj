@@ -89,7 +89,7 @@ public class OpenNLP {
         File file = new File("Dataset_Wikinews.txt");
         BufferedReader readerText = new BufferedReader(new FileReader(file));
 
-        InputStream is = new FileInputStream("en-sent.bin");
+        InputStream is = new FileInputStream("\\models\\sen-sent.bin");
         SentenceModel model = new SentenceModel(is);
         SentenceDetectorME sdetector = new SentenceDetectorME(model);
 
@@ -119,7 +119,7 @@ public class OpenNLP {
         BufferedReader readerText = new BufferedReader(new FileReader(file));
 
         // always start with a model, a model is learned from training data
-        InputStream is = new FileInputStream("en-token.bin");
+        InputStream is = new FileInputStream("\\models\\en-token.bin");
         TokenizerModel model = new TokenizerModel(is);
         Tokenizer tokenizer = new TokenizerME(model);
 
@@ -262,7 +262,7 @@ public class OpenNLP {
         HashMap<String, Integer> contadorPalavra = new HashMap<String, Integer>();
         HashMap<String, Integer[]> contadorPalavraGlobal = new HashMap<String, Integer[]>();
         POSModel model = new POSModelLoader()
-                .load(new File("en-pos-maxent.bin"));
+                .load(new File("\\models\\en-pos-maxent.bin"));
         PerformanceMonitor perfMon = new PerformanceMonitor(System.err, "sent");
         POSTaggerME tagger = new POSTaggerME(model);
         LinkedList<String> tokens = new LinkedList<>();
