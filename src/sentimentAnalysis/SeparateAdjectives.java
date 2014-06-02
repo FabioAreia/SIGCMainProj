@@ -53,7 +53,7 @@ public class SeparateAdjectives {
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
 //        tokinization();
-        evaluateComment("My wife and I saw a three-wheeled car just a few days ago. My wife asked me if it was safe, and I said not nearly as safe as a four-wheel car. Now we know exactly how not-safe :-) ﻿");
+        evaluateComment("not good");
     }
 
     public static LinkedList<String> tokinization(String comment) throws InvalidFormatException,
@@ -158,7 +158,7 @@ public class SeparateAdjectives {
             POSSample sample = new POSSample(whitespaceTokenizerLine, tags);
 //            System.out.println(sample.toString());
         }
-        score = sentidor.scoreComment(adjectives);
+        score = sentidor.scoreComment(adjectives, adjectivesWithBut,adjectivesShiftados);
         return score;
     }
 }
