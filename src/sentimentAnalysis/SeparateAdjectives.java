@@ -88,9 +88,9 @@ public class SeparateAdjectives {
         br.close();
 
         for (int i = 0; i < sentencesNews.size(); i++) {
-            System.out.println(sentencesNews.get(i));
+//            System.out.println(sentencesNews.get(i));
         }
-        System.out.println("Numero de frazes: " + sentencesNews.size());
+//        System.out.println("Numero de frazes: " + sentencesNews.size());
         is.close();
     }
 
@@ -143,6 +143,7 @@ public class SeparateAdjectives {
         System.out.println("tamanho dos tokens" + tokens.size());
 
         SentiWordNet sentidor = new SentiWordNet("SentiWordNet_3.0.0_20130122.txt");
+        LinkedList<String> adjectives = new LinkedList<>();
 
 //        String input = tokinization().get(6);
         String input = "";
@@ -153,94 +154,20 @@ public class SeparateAdjectives {
             String[] tags = tagger.tag(whitespaceTokenizerLine);
             for (String tag : tags) {
                                     if (tag.contains("JJ")) {
-                    System.out.println(tag);
-                    System.out.println(tokens.get(i));
-                        sentidor.pontuar(tokens.get(i));
+                                        adjectives.add(tokens.get(i));
+//                        sentidor.pontuar(tokens.get(i));
+                                        
+                                        
                     }
-                if (tag.contains("NN")) {
-                    classificadoResultado.add(tag);
-                    classificadoNome.add(tokens.get(i));
-
-//                        HashMap
-                    if (!contadorPalavra.containsKey(tokens.get(i))) {
-                        System.out.println("ss");
-                        contadorPalavra.put(tokens.get(i), 1);
-                        Integer temp[] = new Integer[10];
-
-                        for (int j = 0; j < 10; j++) {
-                            temp[j] = 0;
-                        }
-
-                        contadorPalavraGlobal.put(tokens.get(i), temp);
-                    } else if (contadorPalavra.containsKey(tokens.get(i))) {
-                        contadorPalavra.put(tokens.get(i), contadorPalavra.get(tokens.get(i)) + 1);
-                        System.out.println("REPETIDOS");
-                    }
-                }
+                                    
             }
 
             POSSample sample = new POSSample(whitespaceTokenizerLine, tags);
-            System.out.println(sample.toString());
-
+//            System.out.println(sample.toString());
         }
-
-        ObjectStream<String> lineStream = new PlainTextByLineStream(
-                new StringReader(input));
-
-        perfMon.start();
-        String line;
-        while ((line = lineStream.read()) != null) {
-
-            String whitespaceTokenizerLine[] = WhitespaceTokenizer.INSTANCE
-                    .tokenize(line);
-            String[] tags = tagger.tag(whitespaceTokenizerLine);
-
-            POSSample sample = new POSSample(whitespaceTokenizerLine, tags);
-            System.out.println(sample.toString());
-
-            perfMon.incrementCounter();
-        }
-        perfMon.stopAndPrintFinalResult();
-        System.out.println("========================\n\n");
-        for (int i = 0; i < classificadoResultado.size(); i++) {
-            System.out.println(classificadoNome.get(i) + "-->" + classificadoResultado.get(i));
-        }
-
-        File dadosWeka = new File("datasetRepetidos.csv");
-        dadosWeka.createNewFile();
-        FileWriter fw = new FileWriter(dadosWeka);
-        BufferedWriter bw = new BufferedWriter(fw);
-
-        for (int i = 0; i < classificadoNome.size(); i++) {
-            bw.write(classificadoNome.get(i) + ",");
-        }
-
-        File dadosWeka2 = new File("datasetSemRepetidos2.csv");
-        dadosWeka2.createNewFile();
-        FileWriter fw2 = new FileWriter(dadosWeka2);
-        BufferedWriter bw2 = new BufferedWriter(fw2);
-
-//            for (int i = 0; i < tokens.size(); i++) {
-//                bw2.write(tokens.get(i) +"  -->  " + contadorPalavra.get(tokens.get(i))+ "\n");
-//            }
-//            for (int i = 0; i < classificadoNome.size(); i++) {
-//                bw.write(contadorPalavra.get(classificadoNome.get(i)).toString());
-//            }
-        for (int i = 0; i < treatText.allWordTokens.size(); i++) {
-
-            ArrayList<String[]> tags2 = treatText.allWordTokens.get(i);
-            ArrayList<String[]> tempTokens = treatText.allNNTokens.get(i);
-            int o = 0;
-            for (String[] tags : tags2) {
-                String[] tempTok = tempTokens.get(o);
-                int m = 0;
-                for (String tag : tags) {
-                    String tempT = tempTok[m];
-                    m++;
-                }
-                o++;
-            }
-        }
+        sentidor.scoreComment(adjectives);
     }
-
+    
 }
+       
+
