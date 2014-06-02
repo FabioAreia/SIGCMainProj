@@ -71,10 +71,10 @@ public class SeparateAdjectives {
 //        BufferedReader br = new BufferedReader(new FileReader(file));
         String line = comment;
 //        while ((line = br.readLine()) != null) {
-            String tokensTemp[] = tokenizer.tokenize(line);
-            for (int i = 0; i < tokensTemp.length; i++) {
-                tokens.add(tokensTemp[i]);
-            }
+        String tokensTemp[] = tokenizer.tokenize(line);
+        for (int i = 0; i < tokensTemp.length; i++) {
+            tokens.add(tokensTemp[i]);
+        }
 //        }
 //        br.close();
 
@@ -89,7 +89,8 @@ public class SeparateAdjectives {
         return tokens;
     }
 
-    public static void evaluateComment(String comment) throws IOException {
+    public static double evaluateComment(String comment) throws IOException {
+        double score = 0;
 //        TreatText treatText = new TreatText("Dataset_Wikinews.txt");
 //        treatText.run();
         LinkedList<String> classificadoResultado = new LinkedList<>();
@@ -115,21 +116,18 @@ public class SeparateAdjectives {
                     .tokenize(tokens.get(i));
             String[] tags = tagger.tag(whitespaceTokenizerLine);
             for (String tag : tags) {
-                                    if (tag.contains("JJ")) {
-                                        adjectives.add(tokens.get(i));
+                if (tag.contains("JJ")) {
+                    adjectives.add(tokens.get(i));
 //                        sentidor.pontuar(tokens.get(i));
-                                        
-                                        
-                    }
-                                    
+
+                }
+
             }
 
             POSSample sample = new POSSample(whitespaceTokenizerLine, tags);
 //            System.out.println(sample.toString());
         }
-        sentidor.scoreComment(adjectives);
+        score = sentidor.scoreComment(adjectives);
+        return score;
     }
-    
 }
-       
-
