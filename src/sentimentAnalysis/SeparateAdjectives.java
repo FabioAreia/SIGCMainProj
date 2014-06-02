@@ -53,7 +53,7 @@ public class SeparateAdjectives {
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
 //        tokinization();
-        evaluateComment("not good");
+        evaluateComment("oh well... at least we have them to compare ourselves to them and feel good. to point at them and call them stupid, so that we could appear smarter. they are tony montanas.﻿");
     }
 
     public static LinkedList<String> tokinization(String comment) throws InvalidFormatException,
