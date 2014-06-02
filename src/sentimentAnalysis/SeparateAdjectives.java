@@ -53,8 +53,7 @@ public class SeparateAdjectives {
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
 //        tokinization();
-        evaluateComment("under British law at the time, but this specific design not made it fall into a cheaper tax bracket for vehicle taxes, which made the vehicle affordable to low income people, particularly in the mining districts in the north.\n" +
-"That's the main reason it was designed as it was.﻿");
+        evaluateComment("My wife and I saw a three-wheeled car just a few days ago. My wife asked me if it was safe, and I said not nearly as safe as a four-wheel car. Now we know exactly how not-safe :-) ﻿");
     }
 
     public static LinkedList<String> tokinization(String comment) throws InvalidFormatException,
@@ -92,6 +91,8 @@ public class SeparateAdjectives {
 
     public static double evaluateComment(String comment) throws IOException {
         double score = 0;
+        boolean butclause = false;
+        boolean opinioShifter = false;
 //        TreatText treatText = new TreatText("Dataset_Wikinews.txt");
 //        treatText.run();
         LinkedList<String> classificadoResultado = new LinkedList<>();
@@ -108,6 +109,9 @@ public class SeparateAdjectives {
 
         SentiWordNet sentidor = new SentiWordNet("SentiWordNet_3.0.0_20130122.txt");
         LinkedList<String> adjectives = new LinkedList<>();
+        LinkedList<String> adjectivesShiftados = new LinkedList<>();
+        LinkedList<String> adjectivesWithBut = new LinkedList<>();
+        
 
 //        String input = tokinization().get(6);
         String input = "";
@@ -117,17 +121,36 @@ public class SeparateAdjectives {
                     .tokenize(tokens.get(i));
             String[] tags = tagger.tag(whitespaceTokenizerLine);
             for (String tag : tags) {
-                if (tag.contains("JJ")) {
+                if (tag.contains("JJ") && !opinioShifter && !butclause) {
                     adjectives.add(tokens.get(i));
 //                        sentidor.pontuar(tokens.get(i));
                 }
                 
+              if (tag.contains("JJ") && opinioShifter) {
+                    adjectivesShiftados.add(tokens.get(i));
+                    System.out.println("APANHEI UM NOT ANTES");
+//  
+                }
+              
+               if (tag.contains("JJ") && butclause) {
+                    adjectivesWithBut.add(tokens.get(i));
+                    System.out.println("APANHEI UM NOT ANTES");
+                }
+               
+              
+               if (tag.contains("JJ")){
+                       butclause = false;
+                       opinioShifter = false;
+               }
+                       
                 if (tokens.get(i).equals("not") || tokens.get(i).equals("never") || tokens.get(i).equals("none") || tokens.get(i).equals("nobody") || tokens.get(i).equals("nowhere") || tokens.get(i).equals("neither") || tokens.get(i).equals("cannot")){
-                    System.out.println("Apanhou um opinion shifter");   
+                    opinioShifter=true;
+//                    System.out.println("Apanhado opinion Shifter");
                 }
                 
                 if (tokens.get(i).equals("but")){
-                    System.out.println("Apanhou um but clause");   
+                    butclause=true;
+//                    System.out.println("Apanhado butclause");
                 }
 
             }
