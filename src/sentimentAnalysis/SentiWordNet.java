@@ -3,6 +3,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 public class SentiWordNet {
@@ -119,23 +120,33 @@ public class SentiWordNet {
                 String pathToSWN = "SentiWordNet_3.0.0_20130122.txt";
 		SentiWordNet sentiwordnet = new SentiWordNet(pathToSWN);
 		
-		System.out.println("good#a "+sentiwordnet.extract("good", "a"));
+		System.out.println("good#a "+sentiwordnet.extract("gooddddda", "a"));
 		System.out.println("bad#a "+sentiwordnet.extract("bad", "a"));
 		System.out.println("nice#a "+sentiwordnet.extract("nice", "a"));
 		System.out.println("worst#a "+sentiwordnet.extract("worst", "a"));
 	}
         
-        	public  void pontuar(String palavra) throws IOException {
-//		if(args.length<1) {
-//			System.err.println("Usage: java SentiWordNetDemoCode <pathToSentiWordNetFile>");
-//			return;
-//		}
-		
-//		String pathToSWN = args[0];
+        	public double pontuar(String palavra) throws IOException {
+                double pontuacao = 0;
+                double scoreTotal = 0;
+                LinkedList<Double> scoreWords = new LinkedList<Double>();
                 String pathToSWN = "SentiWordNet_3.0.0_20130122.txt";
 		SentiWordNet sentiwordnet = new SentiWordNet(pathToSWN);
                     System.out.println("a palavra é "+ palavra);
-                System.out.println("palavra tem pontuação "+sentiwordnet.extract(palavra, "a"));
-		
+                    try{
+                        System.out.println("palavra tem pontuação "+sentiwordnet.extract(palavra, "a"));
+                       scoreWords.add(sentiwordnet.extract(palavra, "a"));
+                    }
+                    catch(NullPointerException e){
+                    }
+                    for (int i = 0; i < scoreWords.size(); i++) {
+                       scoreTotal = scoreTotal+scoreWords.get(i);
+                       pontuacao = scoreTotal/scoreWords.size();
+                    }
+                    System.out.println("A Pontuação é de "+pontuacao);
+                    return  pontuacao;
+                //System.out.println("palavra tem pontuação "+sentiwordnet.extract(palavra, "a"));
 	}
+                
+                
 }

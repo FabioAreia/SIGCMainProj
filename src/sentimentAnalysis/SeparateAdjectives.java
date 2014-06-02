@@ -69,9 +69,7 @@ public class SeparateAdjectives {
         String paragraph = "Hi. How are you? This is Mikel. I'm Fine.";
         File file = new File("Dataset_Wikinews.txt");
         BufferedReader readerText = new BufferedReader(new FileReader(file));
-        
 
-        
         InputStream is = new FileInputStream("models\\en-sent.bin");
         SentenceModel model = new SentenceModel(is);
         SentenceDetectorME sdetector = new SentenceDetectorME(model);
@@ -143,8 +141,8 @@ public class SeparateAdjectives {
         LinkedList<String> tokens = new LinkedList<>();
         tokens = tokinization();
         System.out.println("tamanho dos tokens" + tokens.size());
-        
-         SentiWordNet sentidor = new SentiWordNet("SentiWordNet_3.0.0_20130122.txt");
+
+        SentiWordNet sentidor = new SentiWordNet("SentiWordNet_3.0.0_20130122.txt");
 
 //        String input = tokinization().get(6);
         String input = "";
@@ -154,6 +152,11 @@ public class SeparateAdjectives {
                     .tokenize(tokens.get(i));
             String[] tags = tagger.tag(whitespaceTokenizerLine);
             for (String tag : tags) {
+                                    if (tag.contains("JJ")) {
+                    System.out.println(tag);
+                    System.out.println(tokens.get(i));
+                        sentidor.pontuar(tokens.get(i));
+                    }
                 if (tag.contains("NN")) {
                     classificadoResultado.add(tag);
                     classificadoNome.add(tokens.get(i));
@@ -220,24 +223,19 @@ public class SeparateAdjectives {
 //            for (int i = 0; i < tokens.size(); i++) {
 //                bw2.write(tokens.get(i) +"  -->  " + contadorPalavra.get(tokens.get(i))+ "\n");
 //            }
-
-
 //            for (int i = 0; i < classificadoNome.size(); i++) {
 //                bw.write(contadorPalavra.get(classificadoNome.get(i)).toString());
 //            }
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < treatText.allWordTokens.size(); i++) {
 
             ArrayList<String[]> tags2 = treatText.allWordTokens.get(i);
             ArrayList<String[]> tempTokens = treatText.allNNTokens.get(i);
-            int o=0;
+            int o = 0;
             for (String[] tags : tags2) {
                 String[] tempTok = tempTokens.get(o);
-                int m=0;
+                int m = 0;
                 for (String tag : tags) {
                     String tempT = tempTok[m];
-                     if (tag.contains("JJ")) {
-                         sentidor.pontuar(tokens.get(i));
-                     }
                     m++;
                 }
                 o++;
