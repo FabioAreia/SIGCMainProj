@@ -53,7 +53,8 @@ public class SeparateAdjectives {
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
 //        tokinization();
-        evaluateComment("My wife and I saw a three-wheeled car just a few days ago. My wife asked me if it was safe, and I said not nearly as safe as a four-wheel car. Now we know exactly how not-safe :-) ﻿");
+        evaluateComment("under British law at the time, but this specific design not made it fall into a cheaper tax bracket for vehicle taxes, which made the vehicle affordable to low income people, particularly in the mining districts in the north.\n" +
+"That's the main reason it was designed as it was.﻿");
     }
 
     public static LinkedList<String> tokinization(String comment) throws InvalidFormatException,
@@ -119,7 +120,14 @@ public class SeparateAdjectives {
                 if (tag.contains("JJ")) {
                     adjectives.add(tokens.get(i));
 //                        sentidor.pontuar(tokens.get(i));
-
+                }
+                
+                if (tokens.get(i).equals("not") || tokens.get(i).equals("never") || tokens.get(i).equals("none") || tokens.get(i).equals("nobody") || tokens.get(i).equals("nowhere") || tokens.get(i).equals("neither") || tokens.get(i).equals("cannot")){
+                    System.out.println("Apanhou um opinion shifter");   
+                }
+                
+                if (tokens.get(i).equals("but")){
+                    System.out.println("Apanhou um but clause");   
                 }
 
             }
