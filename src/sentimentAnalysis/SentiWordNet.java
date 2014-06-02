@@ -153,7 +153,7 @@ public class SentiWordNet {
         double consScoreNot = -0.5;
         double consScoreBut = -0.5;
 
-        System.out.println("ENTREI AQUI E TENHO " + words.size());
+//        System.out.println("ENTREI AQUI E TENHO " + words.size());
         LinkedList<Double> scoreWords = new LinkedList<Double>();
         LinkedList<Double> scoreWordsBut = new LinkedList<Double>();
         LinkedList<Double> scoreWordsNot = new LinkedList<Double>();
@@ -198,11 +198,7 @@ public class SentiWordNet {
             }
 
         }
-
-//        for (int j = 0; j < scoreWords.size(); j++) {
-//            scoreTotal = scoreTotal + scoreWords.get(j);
-//            pontuacao = scoreTotal / scoreWords.size();
-//        }
+        
         for (int j = 0; j < scoreWords.size(); j++) {
             scoreTotal = scoreTotal + scoreWords.get(j);
         }
