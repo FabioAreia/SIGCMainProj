@@ -52,52 +52,14 @@ public class SeparateAdjectives {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
-//        File file = new File("C:\\Users\\Fábio\\Documents\\NetBeansProjects\\Open NLP\\en-pos-maxent.bin");
-//        BufferedReader reader = new BufferedReader(new FileReader(file));
-//        
-//        PlainTextGISModelReader readerNLP = new PlainTextGISModelReader(file);
-//        GISModel model = (GISModel) readerNLP.getModel();
-//        DocumentCategorizerME dc = new DocumentCategorizerME (model);
-
-        SentenceDetect();
-        tokinization();
-        POSTag();
+//        tokinization();
+        evaluateComment("My wife and I saw a three-wheeled car just a few days ago. My wife asked me if it was safe, and I said not nearly as safe as a four-wheel car. Now we know exactly how not-safe :-) ﻿");
     }
 
-    public static void SentenceDetect() throws InvalidFormatException,
+    public static LinkedList<String> tokinization(String comment) throws InvalidFormatException,
             IOException {
-        String paragraph = "Hi. How are you? This is Mikel. I'm Fine.";
-        File file = new File("Dataset_Wikinews.txt");
-        BufferedReader readerText = new BufferedReader(new FileReader(file));
-
-        InputStream is = new FileInputStream("models\\en-sent.bin");
-        SentenceModel model = new SentenceModel(is);
-        SentenceDetectorME sdetector = new SentenceDetectorME(model);
-
-        String sentences[] = sdetector.sentDetect(paragraph);
-        LinkedList<String> sentencesNews = new LinkedList<>();
-
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        String line;
-        while ((line = br.readLine()) != null) {
-            String sentencesTemp[] = sdetector.sentDetect(line);
-            for (int i = 0; i < sentencesTemp.length; i++) {
-                sentencesNews.add(sentencesTemp[i]);
-            }
-        }
-        br.close();
-
-        for (int i = 0; i < sentencesNews.size(); i++) {
-//            System.out.println(sentencesNews.get(i));
-        }
-//        System.out.println("Numero de frazes: " + sentencesNews.size());
-        is.close();
-    }
-
-    public static LinkedList<String> tokinization() throws InvalidFormatException,
-            IOException {
-        File file = new File("Dataset_Wikinews.txt");
-        BufferedReader readerText = new BufferedReader(new FileReader(file));
+//        File file = new File("Dataset_Wikinews.txt");
+//        BufferedReader readerText = new BufferedReader(new FileReader(file));
 
         // always start with a model, a model is learned from training data
         InputStream is = new FileInputStream("models\\en-token.bin");
@@ -106,30 +68,30 @@ public class SeparateAdjectives {
 
         LinkedList<String> tokens = new LinkedList<>();
 
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        String line;
-        while ((line = br.readLine()) != null) {
+//        BufferedReader br = new BufferedReader(new FileReader(file));
+        String line = comment;
+//        while ((line = br.readLine()) != null) {
             String tokensTemp[] = tokenizer.tokenize(line);
             for (int i = 0; i < tokensTemp.length; i++) {
                 tokens.add(tokensTemp[i]);
             }
-        }
-        br.close();
+//        }
+//        br.close();
 
 //        System.out.println(sentences[0]);
 //        System.out.println(sentences[1]);
 //        System.out.println(sentences[2]);
-        for (int i = 0; i < tokens.size(); i++) {
-            System.out.println(tokens.get(i));
-        }
+//        for (int i = 0; i < tokens.size(); i++) {
+//            System.out.println(tokens.get(i));
+//        }
         System.out.println("Numero de palavras: " + tokens.size());
         is.close();
         return tokens;
     }
 
-    public static void POSTag() throws IOException {
-        TreatText treatText = new TreatText("Dataset_Wikinews.txt");
-        treatText.run();
+    public static void evaluateComment(String comment) throws IOException {
+//        TreatText treatText = new TreatText("Dataset_Wikinews.txt");
+//        treatText.run();
         LinkedList<String> classificadoResultado = new LinkedList<>();
         LinkedList<String> classificadoNome = new LinkedList<>();
         HashMap<String, Integer> contadorPalavra = new HashMap<String, Integer>();
@@ -139,7 +101,7 @@ public class SeparateAdjectives {
         PerformanceMonitor perfMon = new PerformanceMonitor(System.err, "sent");
         POSTaggerME tagger = new POSTaggerME(model);
         LinkedList<String> tokens = new LinkedList<>();
-        tokens = tokinization();
+        tokens = tokinization(comment);
         System.out.println("tamanho dos tokens" + tokens.size());
 
         SentiWordNet sentidor = new SentiWordNet("SentiWordNet_3.0.0_20130122.txt");
