@@ -55,7 +55,7 @@ public class SeparateAdjectives {
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
 //        tokinization();
-//        evaluateComment("this is not nice");
+//        evaluateComment("Wow thats great And I luv all ur videos 3");
         csvEvaluateVideo("ccommentsforlucene.csv");
     }
 
@@ -161,69 +161,60 @@ public class SeparateAdjectives {
     }
 
     public static void csvEvaluateVideo(String pathFile) throws IOException {
-int lastLine =0;
+        int lastLine = 0;
         File file = new File(pathFile);
         BufferedReader reader = new BufferedReader(new FileReader(file));
-        
+
         LinkedList<Double> scoreCommentsVideo = new LinkedList<>();
 
-            	File fileWrite =new File("CommentsPerVideo.csv");
-                FileWriter fileW = new FileWriter (fileWrite);
-                BufferedWriter buffW = new BufferedWriter (fileW); 
-                
-                
+        File fileWrite = new File("CommentsPerVideo.csv");
+        FileWriter fileW = new FileWriter(fileWrite);
+        BufferedWriter buffW = new BufferedWriter(fileW);
+
         String line;
-String previousRow = "";
+        String previousRow = "";
         while ((line = reader.readLine()) != null) {
-            
+
             String[] splits = line.split(";");
 //            System.out.println(splits[2]);
-            if  (previousRow.equals(splits[2])){
+            if (previousRow.equals(splits[2])) {
                 double wordScore = evaluateComment(splits[8]);
                 System.out.println("COMENTARIO é" + splits[8]);
-                if (wordScore!= NaN){
-                    System.out.println("SCORESS  "+ wordScore);
+                if (wordScore > 0 || wordScore < 0) {
+                    System.out.println("SCORESS  " + wordScore);
 //                    System.out.println("Nao é nan");
-                scoreCommentsVideo.add(wordScore);
+                    scoreCommentsVideo.add(wordScore);
                 }
-  
 
-//                System.out.println("pontuacao "+ evaluateComment(splits[8]));
-//                System.out.println("Linha igual "+ splits[8]);
             }
-            if (!previousRow.equals(splits[2]) ){
-                
-               double pontuacao = evaluateList(previousRow, scoreCommentsVideo);
-               scoreCommentsVideo.clear();
-               
-               double wordScore = evaluateComment(splits[8]);
-                scoreCommentsVideo.add(wordScore);
-                
-                System.out.println(previousRow+";"+ pontuacao);
-                buffW.write(previousRow+";"+ pontuacao);
+            if (!previousRow.equals(splits[2])) {
+                double pontuacao = evaluateList(previousRow, scoreCommentsVideo);
+                scoreCommentsVideo.clear();
+
+                buffW.write(previousRow + ";" + pontuacao);
                 buffW.newLine();
 
-                
-                previousRow=splits[2];
-
-                
+                double wordScore = evaluateComment(splits[8]);
+                if (wordScore > 0 || wordScore < 0) {
+                scoreCommentsVideo.add(wordScore);
+                }
+                previousRow = splits[2];
             }
         }
         buffW.close();
         fileW.close();
     }
-    
-    
-        public static double evaluateList(String title, LinkedList<Double> listaScores) throws IOException{
+
+    public static double evaluateList(String title, LinkedList<Double> listaScores) throws IOException {
 //        System.out.println("Entrei");
-        
+
         double pontuacaoTotal = 0;
         double pontuacao = 0;
         for (int i = 0; i < listaScores.size(); i++) {
             pontuacaoTotal = pontuacaoTotal + listaScores.get(i);
         }
-        pontuacao = pontuacaoTotal/listaScores.size();
-            System.out.println("A pontuação do video " + title +"media é de "+ pontuacao);
+        pontuacao = pontuacaoTotal / listaScores.size();
+        System.out.println("A pontuação do video " + title + "media é de " + pontuacao);
         return pontuacao;
     }
 }

@@ -123,6 +123,8 @@ public class SentiWordNet {
         System.out.println("bad#a " + sentiwordnet.extract("bad", "a"));
         System.out.println("nice#a " + sentiwordnet.extract("nice", "a"));
         System.out.println("worst#a " + sentiwordnet.extract("worst", "a"));
+        
+//        sentiwordnet.extract(pathToSWN, pathToSWN)
     }
 
     public double scoreWord(String palavra) throws IOException {
