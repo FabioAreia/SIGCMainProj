@@ -180,9 +180,11 @@ String previousRow = "";
 //            System.out.println(splits[2]);
             if  (previousRow.equals(splits[2])){
                 double wordScore = evaluateComment(splits[8]);
+                System.out.println("COMENTARIO é" + splits[8]);
                 if (wordScore!= NaN){
-                    System.out.println("Nao é nan");
-                                    scoreCommentsVideo.add(evaluateComment(splits[8]));
+                    System.out.println("SCORESS  "+ wordScore);
+//                    System.out.println("Nao é nan");
+                scoreCommentsVideo.add(wordScore);
                 }
   
 
@@ -190,14 +192,18 @@ String previousRow = "";
 //                System.out.println("Linha igual "+ splits[8]);
             }
             if (!previousRow.equals(splits[2]) ){
-               
                 
                double pontuacao = evaluateList(previousRow, scoreCommentsVideo);
+               scoreCommentsVideo.clear();
+               
+               double wordScore = evaluateComment(splits[8]);
+                scoreCommentsVideo.add(wordScore);
+                
                 System.out.println(previousRow+";"+ pontuacao);
                 buffW.write(previousRow+";"+ pontuacao);
                 buffW.newLine();
 
-                scoreCommentsVideo.clear();
+                
                 previousRow=splits[2];
 
                 
