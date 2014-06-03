@@ -17,7 +17,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.io.StringReader;
+import static java.lang.Double.NaN;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,11 +55,13 @@ public class SeparateAdjectives {
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
 //        tokinization();
-        evaluateComment("not good");
+//        evaluateComment("this is not nice");
+        csvEvaluateVideo("ccommentsforlucene.csv");
     }
 
     public static LinkedList<String> tokinization(String comment) throws InvalidFormatException,
             IOException {
+//        System.out.println("Entrei no tokinazation e o comment é " + comment);
 //        File file = new File("Dataset_Wikinews.txt");
 //        BufferedReader readerText = new BufferedReader(new FileReader(file));
 
@@ -69,7 +73,7 @@ public class SeparateAdjectives {
         LinkedList<String> tokens = new LinkedList<>();
 
 //        BufferedReader br = new BufferedReader(new FileReader(file));
-        String line = comment;
+        String line = comment.toLowerCase();
 //        while ((line = br.readLine()) != null) {
         String tokensTemp[] = tokenizer.tokenize(line);
         for (int i = 0; i < tokensTemp.length; i++) {
@@ -84,34 +88,29 @@ public class SeparateAdjectives {
 //        for (int i = 0; i < tokens.size(); i++) {
 //            System.out.println(tokens.get(i));
 //        }
-        System.out.println("Numero de palavras: " + tokens.size());
+//        System.out.println("Numero de palavras: " + tokens.size());
         is.close();
         return tokens;
     }
 
     public static double evaluateComment(String comment) throws IOException {
-        double score = 0;
+        double score = 0.0;
         boolean butclause = false;
         boolean opinioShifter = false;
 //        TreatText treatText = new TreatText("Dataset_Wikinews.txt");
 //        treatText.run();
-        LinkedList<String> classificadoResultado = new LinkedList<>();
-        LinkedList<String> classificadoNome = new LinkedList<>();
-        HashMap<String, Integer> contadorPalavra = new HashMap<String, Integer>();
-        HashMap<String, Integer[]> contadorPalavraGlobal = new HashMap<String, Integer[]>();
         POSModel model = new POSModelLoader()
                 .load(new File("en-pos-maxent.bin"));
         PerformanceMonitor perfMon = new PerformanceMonitor(System.err, "sent");
         POSTaggerME tagger = new POSTaggerME(model);
         LinkedList<String> tokens = new LinkedList<>();
-        tokens = tokinization(comment);
-        System.out.println("tamanho dos tokens" + tokens.size());
+        tokens = tokinization(comment.toLowerCase());
+//        System.out.println("tamanho dos tokens" + tokens.size());
 
         SentiWordNet sentidor = new SentiWordNet("SentiWordNet_3.0.0_20130122.txt");
         LinkedList<String> adjectives = new LinkedList<>();
         LinkedList<String> adjectivesShiftados = new LinkedList<>();
         LinkedList<String> adjectivesWithBut = new LinkedList<>();
-        
 
 //        String input = tokinization().get(6);
         String input = "";
@@ -122,34 +121,33 @@ public class SeparateAdjectives {
             String[] tags = tagger.tag(whitespaceTokenizerLine);
             for (String tag : tags) {
                 if (tag.contains("JJ") && !opinioShifter && !butclause) {
-                    adjectives.add(tokens.get(i));
+                    adjectives.add(tokens.get(i).toLowerCase());
 //                        sentidor.pontuar(tokens.get(i));
                 }
-                
-              if (tag.contains("JJ") && opinioShifter) {
-                    adjectivesShiftados.add(tokens.get(i));
-                    System.out.println("APANHEI UM NOT ANTES");
+
+                if (tag.contains("JJ") && opinioShifter) {
+                    adjectivesShiftados.add(tokens.get(i).toLowerCase());
+//                    System.out.println("APANHEI UM NOT ANTES");
 //  
                 }
-              
-               if (tag.contains("JJ") && butclause) {
-                    adjectivesWithBut.add(tokens.get(i));
-                    System.out.println("APANHEI UM NOT ANTES");
+
+                if (tag.contains("JJ") && butclause) {
+                    adjectivesWithBut.add(tokens.get(i).toLowerCase());
+//                    System.out.println("APANHEI UM NOT ANTES");
                 }
-               
-              
-               if (tag.contains("JJ")){
-                       butclause = false;
-                       opinioShifter = false;
-               }
-                       
-                if (tokens.get(i).equals("not") || tokens.get(i).equals("never") || tokens.get(i).equals("none") || tokens.get(i).equals("nobody") || tokens.get(i).equals("nowhere") || tokens.get(i).equals("neither") || tokens.get(i).equals("cannot")){
-                    opinioShifter=true;
+
+                if (tag.contains("JJ")) {
+                    butclause = false;
+                    opinioShifter = false;
+                }
+
+                if (tokens.get(i).equals("not") || tokens.get(i).equals("never") || tokens.get(i).equals("none") || tokens.get(i).equals("nobody") || tokens.get(i).equals("nowhere") || tokens.get(i).equals("neither") || tokens.get(i).equals("cannot")) {
+                    opinioShifter = true;
 //                    System.out.println("Apanhado opinion Shifter");
                 }
-                
-                if (tokens.get(i).equals("but")){
-                    butclause=true;
+
+                if (tokens.get(i).equals("but")) {
+                    butclause = true;
 //                    System.out.println("Apanhado butclause");
                 }
 
@@ -158,7 +156,68 @@ public class SeparateAdjectives {
             POSSample sample = new POSSample(whitespaceTokenizerLine, tags);
 //            System.out.println(sample.toString());
         }
-        score = sentidor.scoreComment(adjectives, adjectivesWithBut,adjectivesShiftados);
+        score = sentidor.scoreComment(adjectives, adjectivesWithBut, adjectivesShiftados);
         return score;
+    }
+
+    public static void csvEvaluateVideo(String pathFile) throws IOException {
+int lastLine =0;
+        File file = new File(pathFile);
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        
+        LinkedList<Double> scoreCommentsVideo = new LinkedList<>();
+
+            	File fileWrite =new File("CommentsPerVideo.csv");
+                FileWriter fileW = new FileWriter (fileWrite);
+                BufferedWriter buffW = new BufferedWriter (fileW); 
+                
+                
+        String line;
+String previousRow = "";
+        while ((line = reader.readLine()) != null) {
+            
+            String[] splits = line.split(";");
+//            System.out.println(splits[2]);
+            if  (previousRow.equals(splits[2])){
+                double wordScore = evaluateComment(splits[8]);
+                if (wordScore!= NaN){
+                    System.out.println("Nao é nan");
+                                    scoreCommentsVideo.add(evaluateComment(splits[8]));
+                }
+  
+
+//                System.out.println("pontuacao "+ evaluateComment(splits[8]));
+//                System.out.println("Linha igual "+ splits[8]);
+            }
+            if (!previousRow.equals(splits[2]) ){
+               
+                
+               double pontuacao = evaluateList(previousRow, scoreCommentsVideo);
+                System.out.println(previousRow+";"+ pontuacao);
+                buffW.write(previousRow+";"+ pontuacao);
+                buffW.newLine();
+
+                scoreCommentsVideo.clear();
+                previousRow=splits[2];
+
+                
+            }
+        }
+        buffW.close();
+        fileW.close();
+    }
+    
+    
+        public static double evaluateList(String title, LinkedList<Double> listaScores) throws IOException{
+//        System.out.println("Entrei");
+        
+        double pontuacaoTotal = 0;
+        double pontuacao = 0;
+        for (int i = 0; i < listaScores.size(); i++) {
+            pontuacaoTotal = pontuacaoTotal + listaScores.get(i);
+        }
+        pontuacao = pontuacaoTotal/listaScores.size();
+            System.out.println("A pontuação do video " + title +"media é de "+ pontuacao);
+        return pontuacao;
     }
 }

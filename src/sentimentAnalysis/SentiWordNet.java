@@ -131,9 +131,9 @@ public class SentiWordNet {
         LinkedList<Double> scoreWords = new LinkedList<Double>();
         String pathToSWN = "SentiWordNet_3.0.0_20130122.txt";
         SentiWordNet sentiwordnet = new SentiWordNet(pathToSWN);
-        System.out.println("a palavra é " + palavra);
+//        System.out.println("a palavra é " + palavra);
         try {
-            System.out.println("palavra tem pontuação " + sentiwordnet.extract(palavra, "a"));
+//            System.out.println("palavra tem pontuação " + sentiwordnet.extract(palavra, "a"));
             scoreWords.add(sentiwordnet.extract(palavra, "a"));
         } catch (NullPointerException e) {
         }
@@ -162,9 +162,9 @@ public class SentiWordNet {
         for (int i = 0; i < words.size(); i++) {
             String palavra = words.get(i);
 
-            System.out.println("a palavra é " + palavra);
+//            System.out.println("a palavra é " + palavra);
             try {
-                System.out.println("palavra tem pontuação " + sentiwordnet.extract(palavra, "a"));
+//                System.out.println("palavra tem pontuação " + sentiwordnet.extract(palavra, "a"));
                 scoreWords.add(sentiwordnet.extract(palavra, "a"));
             } catch (NullPointerException e) {
             }
@@ -175,9 +175,9 @@ public class SentiWordNet {
             String palavra = wordsBut.get(i);
             double scoreTemp = 0;
 
-            System.out.println("a palavra é " + palavra);
+//            System.out.println("a palavra é " + palavra);
             try {
-                System.out.println("palavra tem pontuação " + sentiwordnet.extract(palavra, "a"));
+//                System.out.println("palavra tem pontuação " + sentiwordnet.extract(palavra, "a"));
                 scoreTemp = sentiwordnet.extract(palavra, "a") * consScoreBut;
                 scoreWordsBut.add(scoreTemp);
             } catch (NullPointerException e) {
@@ -217,5 +217,7 @@ pontuacao = scoreTotal / (scoreWords.size()+scoreWordsBut.size()+scoreWordsNot.s
 
         //System.out.println("palavra tem pontuação "+sentiwordnet.extract(palavra, "a"));
     }
+    
+    
 
 }
