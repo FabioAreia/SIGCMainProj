@@ -197,16 +197,17 @@ public class SeparateAdjectives {
         String previousChannel = "";
         String previousTheme = "";
         String previousLink = "";
-        long previousScore = 0;
-        long previousRatios = 0;
-        long previousLikes = 0;
-        long previousDeslikes = 0;
+        double previousScore = 0;
+        double previousRatios = 0;
+        double previousLikes = 0;
+        double previousDeslikes = 0;
 
         while ((line = reader.readLine()) != null) {
 
             String[] splits = line.split(";");
 //            System.out.println(splits[2]);
             if (previousTitle.equals(splits[2])) {
+                previousTitle = splits[2];
                 double wordScore = evaluateComment(splits[8]);
 //                System.out.println("COMENTARIO é" + splits[8]);
                 if (wordScore > 0 || wordScore < 0) {
@@ -219,25 +220,22 @@ public class SeparateAdjectives {
             if (!previousTitle.equals(splits[2])) {
                 double pontuacao = evaluateList(previousTitle, scoreCommentsVideo);
                 scoreCommentsVideo.clear();
-
-//                buffW.write(previousRow + ";" + pontuacao);
-                buffW.write(previousTheme + ";" + previousChannel + ";" + previousLink + ";" + previousTitle + ";" + previousScore + ";" + previousRatios + ";" + pontuacao);
-
-                buffW.newLine();
-
-                double wordScore = evaluateComment(splits[8]);
+                
+                               double wordScore = evaluateComment(splits[8]);
                 if (wordScore > 0 || wordScore < 0) {
                     scoreCommentsVideo.add(wordScore);
                 }
+                
                 previousTitle = splits[2];
                 previousChannel = splits[1];
                 previousTheme = splits[0];
                 previousLink = splits[6];
                 try {
 
-                    previousScore = Long.parseLong(splits[3]);
-                    previousLikes = Long.parseLong(splits[4]);
-                    previousDeslikes = Long.parseLong(splits[5]);
+                    previousScore = Double.parseDouble(splits[3]);
+
+                    previousLikes = Double.parseDouble(splits[4]);
+                    previousDeslikes = Double.parseDouble(splits[5]);
 
                 } catch (java.lang.NumberFormatException e) {
 
@@ -247,6 +245,14 @@ public class SeparateAdjectives {
                 } else{
                     previousRatios=0;
                 }
+                
+
+//                buffW.write(previousRow + ";" + pontuacao);
+                buffW.write(previousTheme + ";" + previousChannel + ";" + previousLink + ";" + previousTitle + ";" + previousScore + ";" + previousRatios + ";" + pontuacao);
+
+                buffW.newLine();
+
+ 
 
             }
         }
