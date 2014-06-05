@@ -114,9 +114,6 @@ public class SeparateAdjectives {
         LinkedList<String> adverbs = new LinkedList<>();
         LinkedList<String> adverbsShiftados = new LinkedList<>();
         LinkedList<String> adverbsWithBut = new LinkedList<>();
-        
-        
-        
 
 //        String input = tokinization().get(6);
         String input = "";
@@ -151,7 +148,7 @@ public class SeparateAdjectives {
                     adverbs.add(tokens.get(i).toLowerCase());
 //                        sentidor.pontuar(tokens.get(i));
                 }
-                
+
                 if (tag.contains("RB") && opinioShifter) {
                     adverbsShiftados.add(tokens.get(i).toLowerCase());
                 }
@@ -165,8 +162,6 @@ public class SeparateAdjectives {
                     opinioShifter = false;
                 }
 
-                
-
                 if (tokens.get(i).equals("not") || tokens.get(i).equals("never") || tokens.get(i).equals("none") || tokens.get(i).equals("nobody") || tokens.get(i).equals("nowhere") || tokens.get(i).equals("neither") || tokens.get(i).equals("cannot")) {
                     opinioShifter = true;
 //                    System.out.println("Apanhado opinion Shifter");
@@ -176,14 +171,13 @@ public class SeparateAdjectives {
                     butclause = true;
 //                    System.out.println("Apanhado butclause");
                 }
-                        
-                        
+
             }
 
             POSSample sample = new POSSample(whitespaceTokenizerLine, tags);
 //            System.out.println(sample.toString());
         }
-        score = sentidor.scoreComment(adjectives, adjectivesWithBut, adjectivesShiftados,adverbs,adverbsWithBut,adverbsShiftados);
+        score = sentidor.scoreComment(adjectives, adjectivesWithBut, adjectivesShiftados, adverbs, adverbsWithBut, adverbsShiftados);
         return score;
     }
 
@@ -199,33 +193,57 @@ public class SeparateAdjectives {
         BufferedWriter buffW = new BufferedWriter(fileW);
 
         String line;
-        String previousRow = "";
+        String previousTitle = "";
+        String previousChannel = "";
+        String previousTheme = "";
+        String previousLink = "";
+        long previousScore = 0;
+        long previousRatios = 0;
+        long previousLikes = 0;
+        long previousDeslikes = 0;
+
         while ((line = reader.readLine()) != null) {
 
             String[] splits = line.split(";");
 //            System.out.println(splits[2]);
-            if (previousRow.equals(splits[2])) {
+            if (previousTitle.equals(splits[2])) {
                 double wordScore = evaluateComment(splits[8]);
-                System.out.println("COMENTARIO é" + splits[8]);
+//                System.out.println("COMENTARIO é" + splits[8]);
                 if (wordScore > 0 || wordScore < 0) {
-                    System.out.println("SCORESS  " + wordScore);
+//                    System.out.println("SCORESS  " + wordScore);
 //                    System.out.println("Nao é nan");
                     scoreCommentsVideo.add(wordScore);
                 }
 
             }
-            if (!previousRow.equals(splits[2])) {
-                double pontuacao = evaluateList(previousRow, scoreCommentsVideo);
+            if (!previousTitle.equals(splits[2])) {
+                double pontuacao = evaluateList(previousTitle, scoreCommentsVideo);
                 scoreCommentsVideo.clear();
 
-                buffW.write(previousRow + ";" + pontuacao);
+//                buffW.write(previousRow + ";" + pontuacao);
+                buffW.write(previousTheme + ";" + previousChannel + ";" + previousLink + ";" + previousScore + ";" + previousTitle + ";" + previousRatios + ";" + pontuacao);
+
                 buffW.newLine();
 
                 double wordScore = evaluateComment(splits[8]);
                 if (wordScore > 0 || wordScore < 0) {
-                scoreCommentsVideo.add(wordScore);
+                    scoreCommentsVideo.add(wordScore);
                 }
-                previousRow = splits[2];
+                previousTitle = splits[2];
+                previousChannel = splits[1];
+                previousTheme = splits[0];
+                previousLink = splits[6];
+                try {
+
+                    previousScore = Long.parseLong(splits[3]);
+                    previousLikes = Long.parseLong(splits[4]);
+                    previousDeslikes = Long.parseLong(splits[5]);
+//                    previousRatios = previousLikes / previousDeslikes;
+
+                } catch (java.lang.NumberFormatException e) {
+
+                }
+
             }
         }
         buffW.close();
