@@ -221,7 +221,7 @@ public class SeparateAdjectives {
                 scoreCommentsVideo.clear();
 
 //                buffW.write(previousRow + ";" + pontuacao);
-                buffW.write(previousTheme + ";" + previousChannel + ";" + previousLink + ";" + previousScore + ";" + previousTitle + ";" + previousRatios + ";" + pontuacao);
+                buffW.write(previousTheme + ";" + previousChannel + ";" + previousLink + ";" + previousTitle + ";" + previousScore + ";" + previousRatios + ";" + pontuacao);
 
                 buffW.newLine();
 
@@ -238,10 +238,14 @@ public class SeparateAdjectives {
                     previousScore = Long.parseLong(splits[3]);
                     previousLikes = Long.parseLong(splits[4]);
                     previousDeslikes = Long.parseLong(splits[5]);
-//                    previousRatios = previousLikes / previousDeslikes;
 
                 } catch (java.lang.NumberFormatException e) {
 
+                }
+                if (previousLikes >= 0 && previousDeslikes > 0) {
+                    previousRatios = previousLikes / previousDeslikes;
+                } else{
+                    previousRatios=0;
                 }
 
             }
