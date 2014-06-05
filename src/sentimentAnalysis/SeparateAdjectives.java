@@ -220,12 +220,12 @@ public class SeparateAdjectives {
             if (!previousTitle.equals(splits[2])) {
                 double pontuacao = evaluateList(previousTitle, scoreCommentsVideo);
                 scoreCommentsVideo.clear();
-                
-                               double wordScore = evaluateComment(splits[8]);
+
+                double wordScore = evaluateComment(splits[8]);
                 if (wordScore > 0 || wordScore < 0) {
                     scoreCommentsVideo.add(wordScore);
                 }
-                
+
                 previousTitle = splits[2];
                 previousChannel = splits[1];
                 previousTheme = splits[0];
@@ -242,17 +242,18 @@ public class SeparateAdjectives {
                 }
                 if (previousLikes >= 0 && previousDeslikes > 0) {
                     previousRatios = previousLikes / previousDeslikes;
-                } else{
-                    previousRatios=0;
+                } else {
+                    if (previousDeslikes == 0) {
+                        previousRatios = previousLikes;
+                    } else {
+                        previousRatios=-1;
+                    }
                 }
-                
 
 //                buffW.write(previousRow + ";" + pontuacao);
                 buffW.write(previousTheme + ";" + previousChannel + ";" + previousLink + ";" + previousTitle + ";" + previousScore + ";" + previousRatios + ";" + pontuacao);
 
                 buffW.newLine();
-
- 
 
             }
         }
