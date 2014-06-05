@@ -111,6 +111,12 @@ public class SeparateAdjectives {
         LinkedList<String> adjectives = new LinkedList<>();
         LinkedList<String> adjectivesShiftados = new LinkedList<>();
         LinkedList<String> adjectivesWithBut = new LinkedList<>();
+        LinkedList<String> adverbs = new LinkedList<>();
+        LinkedList<String> adverbsShiftados = new LinkedList<>();
+        LinkedList<String> adverbsWithBut = new LinkedList<>();
+        
+        
+        
 
 //        String input = tokinization().get(6);
         String input = "";
@@ -141,6 +147,26 @@ public class SeparateAdjectives {
                     opinioShifter = false;
                 }
 
+                if (tag.contains("RB") && !opinioShifter && !butclause) {
+                    adverbs.add(tokens.get(i).toLowerCase());
+//                        sentidor.pontuar(tokens.get(i));
+                }
+                
+                if (tag.contains("RB") && opinioShifter) {
+                    adverbsShiftados.add(tokens.get(i).toLowerCase());
+                }
+
+                if (tag.contains("RB") && butclause) {
+                    adverbsWithBut.add(tokens.get(i).toLowerCase());
+                }
+
+                if (tag.contains("RB")) {
+                    butclause = false;
+                    opinioShifter = false;
+                }
+
+                
+
                 if (tokens.get(i).equals("not") || tokens.get(i).equals("never") || tokens.get(i).equals("none") || tokens.get(i).equals("nobody") || tokens.get(i).equals("nowhere") || tokens.get(i).equals("neither") || tokens.get(i).equals("cannot")) {
                     opinioShifter = true;
 //                    System.out.println("Apanhado opinion Shifter");
@@ -150,13 +176,14 @@ public class SeparateAdjectives {
                     butclause = true;
 //                    System.out.println("Apanhado butclause");
                 }
-
+                        
+                        
             }
 
             POSSample sample = new POSSample(whitespaceTokenizerLine, tags);
 //            System.out.println(sample.toString());
         }
-        score = sentidor.scoreComment(adjectives, adjectivesWithBut, adjectivesShiftados);
+        score = sentidor.scoreComment(adjectives, adjectivesWithBut, adjectivesShiftados,adverbs,adverbsWithBut,adverbsShiftados);
         return score;
     }
 

@@ -149,7 +149,7 @@ public class SentiWordNet {
         //System.out.println("palavra tem pontuação "+sentiwordnet.extract(palavra, "a"));
     }
 
-    public double scoreComment(LinkedList<String> words, LinkedList<String> wordsBut, LinkedList<String> wordsNot) throws IOException {
+    public double scoreComment(LinkedList<String> adjectives, LinkedList<String> adjectivesBut, LinkedList<String> adjectivesNot,LinkedList<String> adverbs, LinkedList<String> adverbsBut, LinkedList<String> adverbsNot) throws IOException {
         double pontuacao = 0;
         double scoreTotal = 0;
         double consScoreNot = -0.5;
@@ -161,8 +161,9 @@ public class SentiWordNet {
         LinkedList<Double> scoreWordsNot = new LinkedList<Double>();
         String pathToSWN = "SentiWordNet_3.0.0_20130122.txt";
         SentiWordNet sentiwordnet = new SentiWordNet(pathToSWN);
-        for (int i = 0; i < words.size(); i++) {
-            String palavra = words.get(i);
+        
+        for (int i = 0; i < adjectives.size(); i++) {
+            String palavra = adjectives.get(i);
 
 //            System.out.println("a palavra é " + palavra);
             try {
@@ -173,8 +174,8 @@ public class SentiWordNet {
 
         }
 
-        for (int i = 0; i < wordsBut.size(); i++) {
-            String palavra = wordsBut.get(i);
+        for (int i = 0; i < adjectivesBut.size(); i++) {
+            String palavra = adjectivesBut.get(i);
             double scoreTemp = 0;
 
 //            System.out.println("a palavra é " + palavra);
@@ -186,9 +187,36 @@ public class SentiWordNet {
             }
 
         }
+        
+        
+                for (int i = 0; i < adverbs.size(); i++) {
+            String palavra = adverbs.get(i);
 
-        for (int i = 0; i < wordsNot.size(); i++) {
-            String palavra = wordsNot.get(i);
+//            System.out.println("a palavra é " + palavra);
+            try {
+//                System.out.println("palavra tem pontuação " + sentiwordnet.extract(palavra, "a"));
+                scoreWords.add(sentiwordnet.extract(palavra, "a"));
+            } catch (NullPointerException e) {
+            }
+
+        }
+
+        for (int i = 0; i < adverbsBut.size(); i++) {
+            String palavra = adverbsBut.get(i);
+            double scoreTemp = 0;
+
+//            System.out.println("a palavra é " + palavra);
+            try {
+//                System.out.println("palavra tem pontuação " + sentiwordnet.extract(palavra, "a"));
+                scoreTemp = sentiwordnet.extract(palavra, "a") * consScoreBut;
+                scoreWordsBut.add(scoreTemp);
+            } catch (NullPointerException e) {
+            }
+
+        }
+        
+        for (int i = 0; i < adverbsNot.size(); i++) {
+            String palavra = adverbsNot.get(i);
             double scoreTemp = 0;
 
             System.out.println("a palavra é " + palavra);
@@ -212,6 +240,23 @@ public class SentiWordNet {
         for (int j = 0; j < scoreWordsNot.size(); j++) {
             scoreTotal = scoreTotal + scoreWordsNot.get(j);
         }
+        
+        for (int j = 0; j < scoreWords.size(); j++) {
+            scoreTotal = scoreTotal + scoreWords.get(j);
+        }
+
+        for (int j = 0; j < scoreWordsBut.size(); j++) {
+            scoreTotal = scoreTotal + scoreWordsBut.get(j);
+        }
+
+        for (int j = 0; j < scoreWordsNot.size(); j++) {
+            scoreTotal = scoreTotal + scoreWordsNot.get(j);
+        }
+        
+        
+        
+        
+        
 pontuacao = scoreTotal / (scoreWords.size()+scoreWordsBut.size()+scoreWordsNot.size());
 //              System.out.println("Score total"+ scoreTotal);
         System.out.println("A Pontuação do COMENTÁRIO é de " + pontuacao);
