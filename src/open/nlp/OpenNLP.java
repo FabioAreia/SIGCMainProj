@@ -107,9 +107,9 @@ public class OpenNLP {
         br.close();
 
         for (int i = 0; i < sentencesNews.size(); i++) {
-            System.out.println(sentencesNews.get(i));
+//            System.out.println(sentencesNews.get(i));
         }
-        System.out.println("Numero de frazes: " + sentencesNews.size());
+//        System.out.println("Numero de frazes: " + sentencesNews.size());
         is.close();
     }
 
@@ -139,9 +139,9 @@ public class OpenNLP {
 //        System.out.println(sentences[1]);
 //        System.out.println(sentences[2]);
         for (int i = 0; i < tokens.size(); i++) {
-            System.out.println(tokens.get(i));
+//            System.out.println(tokens.get(i));
         }
-        System.out.println("Numero de palavras: " + tokens.size());
+//        System.out.println("Numero de palavras: " + tokens.size());
         is.close();
         return tokens;
     }
@@ -198,7 +198,7 @@ public class OpenNLP {
             DocumentSample sample = new DocumentSample(category, content);
             evaluator.evaluteSample(sample);
             double result = evaluator.getAccuracy();
-            System.out.println("Accuracy = " + result);
+//            System.out.println("Accuracy = " + result);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(OpenNLP.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -267,7 +267,7 @@ public class OpenNLP {
         POSTaggerME tagger = new POSTaggerME(model);
         LinkedList<String> tokens = new LinkedList<>();
         tokens = tokinization();
-        System.out.println("tamanho dos tokens" + tokens.size());
+//        System.out.println("tamanho dos tokens" + tokens.size());
 
 //        String input = tokinization().get(6);
         String input = "";
@@ -283,7 +283,7 @@ public class OpenNLP {
 
 //                        HashMap
                     if (!contadorPalavra.containsKey(tokens.get(i))) {
-                        System.out.println("ss");
+//                        System.out.println("ss");
                         contadorPalavra.put(tokens.get(i), 1);
                         Integer temp[] = new Integer[10];
 
@@ -294,14 +294,14 @@ public class OpenNLP {
                         contadorPalavraGlobal.put(tokens.get(i), temp);
                     } else if (contadorPalavra.containsKey(tokens.get(i))) {
                         contadorPalavra.put(tokens.get(i), contadorPalavra.get(tokens.get(i)) + 1);
-                        System.out.println("REPETIDOS");
+//                        System.out.println("REPETIDOS");
                     }
 
                 }
             }
 
             POSSample sample = new POSSample(whitespaceTokenizerLine, tags);
-            System.out.println(sample.toString());
+//            System.out.println(sample.toString());
 
         }
 
@@ -317,14 +317,14 @@ public class OpenNLP {
             String[] tags = tagger.tag(whitespaceTokenizerLine);
 
             POSSample sample = new POSSample(whitespaceTokenizerLine, tags);
-            System.out.println(sample.toString());
+//            System.out.println(sample.toString());
 
             perfMon.incrementCounter();
         }
         perfMon.stopAndPrintFinalResult();
-        System.out.println("========================\n\n");
+//        System.out.println("========================\n\n");
         for (int i = 0; i < classificadoResultado.size(); i++) {
-            System.out.println(classificadoNome.get(i) + "-->" + classificadoResultado.get(i));
+//            System.out.println(classificadoNome.get(i) + "-->" + classificadoResultado.get(i));
         }
 
         File dadosWeka = new File("datasetRepetidos.csv");
@@ -358,7 +358,7 @@ public class OpenNLP {
                 for (String tag : tags) {
                     String tempT = tempTok[m];
                      if (tag.contains("JJ")){
-                         System.out.println("Encontrou adjectivo\n");
+//                         System.out.println("Encontrou adjectivo\n");
                      }
                          
                          

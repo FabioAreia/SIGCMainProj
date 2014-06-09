@@ -208,25 +208,43 @@ public class SeparateAdjectives {
 //            System.out.println(splits[2]);
             if (previousTitle.equals(splits[2])) {
                 previousTitle = splits[2];
-                double wordScore = evaluateComment(splits[8]);
+                double wordScore = 0;
+
+                try {
+                    wordScore = evaluateComment(splits[8]);
+                } catch (java.lang.ArrayIndexOutOfBoundsException e) {
+                }
+
 //                System.out.println("COMENTARIO é" + splits[8]);
                 if (wordScore > 0 || wordScore < 0) {
 //                    System.out.println("SCORESS  " + wordScore);
 //                    System.out.println("Nao é nan");
                     scoreCommentsVideo.add(wordScore);
                 }
-
             }
             if (!previousTitle.equals(splits[2])) {
                 double pontuacao = evaluateList(previousTitle, scoreCommentsVideo);
                 scoreCommentsVideo.clear();
 
-                double wordScore = evaluateComment(splits[8]);
+                double wordScore = 0;
+                try {
+                    wordScore = evaluateComment(splits[8]);
+                } catch (java.lang.ArrayIndexOutOfBoundsException e) {
+                }
+
                 if (wordScore > 0 || wordScore < 0) {
                     scoreCommentsVideo.add(wordScore);
                 }
 
-                previousTitle = splits[2];
+
+
+//                buffW.write(previousRow + ";" + pontuacao);
+                buffW.write(previousTheme + ";" + previousChannel + ";" + previousLink + ";" + previousTitle + ";" + previousScore + ";" + previousRatios + ";" + pontuacao);
+
+                buffW.newLine();
+                
+                
+                                previousTitle = splits[2];
                 previousChannel = splits[1];
                 previousTheme = splits[0];
                 previousLink = splits[6];
@@ -246,14 +264,9 @@ public class SeparateAdjectives {
                     if (previousDeslikes == 0) {
                         previousRatios = previousLikes;
                     } else {
-                        previousRatios=-1;
+                        previousRatios = -1;
                     }
                 }
-
-//                buffW.write(previousRow + ";" + pontuacao);
-                buffW.write(previousTheme + ";" + previousChannel + ";" + previousLink + ";" + previousTitle + ";" + previousScore + ";" + previousRatios + ";" + pontuacao);
-
-                buffW.newLine();
 
             }
         }
